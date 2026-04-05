@@ -1,14 +1,8 @@
 # PYTHONPROGS
-Game Simulator 
-
+Game Simulator
 
 import random
 import time
-
-
-
-
-
 def start_game():
     money = 50.00
     coffee_beans = 10
