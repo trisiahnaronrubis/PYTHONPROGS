@@ -1,75 +1,95 @@
-# PYTHONPROGS
-Game Simulator
-
-import random
 import time
 
+def slow_print(text):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(0.03)
+    print()
 
+def title_screen():
+    print("\n========================")
+    print("     TRISH CAFE ☕")
+    print("========================\n")
 
+def intro():
+    slow_print("Welcome to Trish Cafe!")
+    slow_print("You're the new owner of a small but cozy cafe.")
+    slow_print("Your choices will decide if your cafe succeeds... or fails.\n")
 
+def first_choice():
+    while True:
+        slow_print("Day 1: A customer walks in. What do you do?")
+        slow_print("A. Greet them warmly")
+        slow_print("B. Ignore them")
+        choice = input("Choice (A/B): ").upper()
 
+        if choice == "A":
+            slow_print("Customer smiles and sits down. Good start!\n")
+            return "good"
+        elif choice == "B":
+            slow_print("Customer leaves. Not a good impression...\n")
+            return "bad"
+        else:
+            print("Invalid input. Try again.\n")
 
+def second_choice(path):
+    while True:
+        slow_print("You need to prepare a drink.")
+        slow_print("A. Make a fancy latte")
+        slow_print("B. Serve instant coffee")
+        choice = input("Choice (A/B): ").upper()
 
+        if choice == "A":
+            slow_print("The drink looks amazing!\n")
+            return path + "_good"
+        elif choice == "B":
+            slow_print("It tastes cheap...\n")
+            return path + "_bad"
+        else:
+            print("Invalid input. Try again.\n")
 
+def third_choice(path):
+    while True:
+        slow_print("More customers are coming!")
+        slow_print("A. Work hard and serve all")
+        slow_print("B. Close early")
+        choice = input("Choice (A/B): ").upper()
 
-def start_game():
-    money = 50.00
-    coffee_beans = 10
-    day = 1
-    reputation = 5
-    
-    print("☕ Welcome to Trisiah Cafe! ☕")
-    print("Can you turn this small shop into a local legend?")
-    
-    while day <= 5:  # Let's play for a 5-day work week
-        print(f"\n--- Day {day} ---")
-        print(f"Stats: ${money:.2f} | Beans: {coffee_beans} | Rep: {reputation}/10")
-        
-        # 1. Management Phase
-        action = input("Options: (1) Buy Beans [$5] (2) Start Shift: ")
-        
-        if action == "1":
-            if money >= 5:
-                money -= 5
-                coffee_beans += 10
-                print("🛒 Restocked! You now have more beans.")
-            else:
-                print("❌ Not enough money!")
-        
-        # 2. Shift Phase
-        print("\nDoors are open! Customers are coming in...")
-        customers = random.randint(2, 5)
-        
-        for i in range(customers):
-            time.sleep(1)
-            if coffee_beans > 0:
-                print(f"  > Customer {i+1} ordered a latte!")
-                # Simple success/fail logic
-                success = random.choice([True, True, False])
-                if success:
-                    income = 6.50
-                    money += income
-                    coffee_beans -= 1
-                    print(f"    ✅ Perfect brew! You earned ${income}")
-                else:
-                    reputation -= 1
-                    coffee_beans -= 1
-                    print("    ⚠️ You burnt the milk! Rep down.")
-            else:
-                print("    🚫 Out of beans! You had to turn a customer away.")
-                reputation -= 1
+        if choice == "A":
+            slow_print("You handled the rush well!\n")
+            return path + "_good"
+        elif choice == "B":
+            slow_print("Customers are disappointed...\n")
+            return path + "_bad"
+        else:
+            print("Invalid input. Try again.\n")
 
-        day += 1
-        
-    # Game Over
-    print("\n--- Weekly Report ---")
-    print(f"Final Balance: ${money:.2f}")
-    print(f"Final Reputation: {reputation}")
-    if reputation > 7:
-        print("Trisiah Cafe is the talk of the town! You win!")
+def ending(result):
+    slow_print("\n--- RESULT ---")
+
+    if result.count("good") >= 2:
+        slow_print("🌟 GOOD ENDING: Trish Cafe becomes popular!")
+    elif result.count("bad") >= 2:
+        slow_print("💔 BAD ENDING: The cafe shuts down...")
     else:
-        print("A bit of a rocky start, but Trisiah Cafe is still standing.")
+        slow_print("😐 NORMAL ENDING: The cafe survives, but barely.")
 
-if __name__ == "__main__":
-    start_game()
+def play_game():
+    title_screen()
+    intro()
 
+    result = first_choice()
+    result = second_choice(result)
+    result = third_choice(result)
+
+    ending(result)
+
+def main():
+    while True:
+        play_game()
+        again = input("\nPlay again? (yes/no): ").lower()
+        if again != "yes":
+            print("Thanks for playing Trish Cafe! ☕")
+            break
+
+main()
